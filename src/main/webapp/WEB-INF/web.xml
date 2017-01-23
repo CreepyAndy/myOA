@@ -11,12 +11,12 @@
 		</servlet-class>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
-			<param-value>/WEB-INF/spring/dispatcher-config.xml</param-value>
+			<param-value>file:src/main/resources/dispatcher-config.xml</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>dispatcher</servlet-name>
-		<url-pattern>/</url-pattern>
+		<url-pattern>*.action</url-pattern>
 	</servlet-mapping>
 </web-app>
