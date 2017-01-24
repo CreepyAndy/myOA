@@ -7,7 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 @Entity
 @Table(name = "t_employee")
@@ -28,7 +29,10 @@ public class Employee {
 	private String email;
 	@Column(name = "phone")
 	private String phone;
-	@OneToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(
+		name = "jt_employee_role"		
+	)
 	private Set<Role> roles;
 	public int getId() {
 		return id;

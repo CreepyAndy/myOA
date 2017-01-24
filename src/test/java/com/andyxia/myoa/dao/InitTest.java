@@ -1,9 +1,11 @@
-package com.pwc.newoa.service;
+package com.andyxia.myoa.dao;
 
-import java.sql.Types;
-import java.text.SimpleDateFormat;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+
+import static org.junit.Assert.*;
+
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import org.junit.Test;
@@ -16,24 +18,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({"file:src/main/resources/dispatcher-config.xml"})
-@WebAppConfiguration
-public class LockerTest {
-	
+@ContextConfiguration(locations={"classpath:dispatcher-config.xml"})
+public class InitTest {
+	@Autowired
+	private EntityManagerFactory entityManager;
 	@Test
-	@Rollback
-	@Transactional(readOnly = true)
-	public void testLocker(){
+	public void testHbm2ddl(){
 		
 	}
-	@Test
-	@Rollback
-	public void testQueryApplication(){
-		
-	}
-	
-
-	
 }
