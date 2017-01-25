@@ -13,7 +13,8 @@ import com.andyxia.myoa.domain.Employee;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath:dispatcher-config.xml"})
 public class EmployeeTest {
-
+	@Autowired
+	private EmployeeDao eDao;
 	@Test
 	public void testAdd(){
 		Employee e = new Employee();
@@ -22,6 +23,6 @@ public class EmployeeTest {
 		e.setName("Andy Xia");
 		e.setPhone("18217265619");
 		e.setPsw("1234");
-
+		eDao.save(e);
 	}
 }
