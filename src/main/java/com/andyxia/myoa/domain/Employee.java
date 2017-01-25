@@ -22,7 +22,7 @@ public class Employee implements Serializable {
     @GeneratedValue
     @Column(name="id", unique = true, nullable = false)
 	private int id;
-	@Column(name = "guid")
+	@Column(name = "guid",unique = true, nullable = false)
 	private String guid;
 	@Column(name = "psw")
 	private String psw;
