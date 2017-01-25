@@ -1,18 +1,28 @@
 package com.andyxia.myoa.domain;
 
+import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 @Entity
 @Table(name = "t_authority")
-public class Authority {
+public class Authority implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8205326672961136192L;
 	@Id
     @GeneratedValue
     @Column(name="id", unique = true, nullable = false)
@@ -21,13 +31,37 @@ public class Authority {
 	private String name;
 	@Column(name = "description")
 	private String description;
+	@ManyToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="parent_id")
+	private Authority parent;
+	@OneToMany(mappedBy="parent", cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+	private Set<Authority> children = new HashSet<Authority>();
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(
 			name = "jt_role_authority"		
 		)
 	private Set<Role> roles;
+	private String url;
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
+	}
 	public int getId() {
 		return id;
+	}
+	public Authority getParent() {
+		return parent;
+	}
+	public void setParent(Authority parent) {
+		this.parent = parent;
+	}
+	public Set<Authority> getChildren() {
+		return children;
+	}
+	public void setChildren(Set<Authority> children) {
+		this.children = children;
 	}
 	public void setId(int id) {
 		this.id = id;

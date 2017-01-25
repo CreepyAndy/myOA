@@ -1,5 +1,6 @@
 package com.andyxia.myoa.domain;
 
+import java.io.Serializable;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -12,7 +13,11 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 @Entity
 @Table(name = "t_employee")
-public class Employee {
+public class Employee implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1845335610753221569L;
 	@Id
     @GeneratedValue
     @Column(name="id", unique = true, nullable = false)
