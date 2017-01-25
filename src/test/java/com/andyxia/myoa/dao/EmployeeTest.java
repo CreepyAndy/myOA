@@ -14,7 +14,7 @@ import com.andyxia.myoa.domain.Employee;
 @ContextConfiguration(locations={"classpath:dispatcher-config.xml"})
 public class EmployeeTest {
 	@Autowired
-	private EmployeeDao eDao;
+	private EmployeeRepository eDao;
 	@Test
 	public void testAdd(){
 		Employee e = new Employee();

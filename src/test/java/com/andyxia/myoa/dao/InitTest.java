@@ -23,8 +23,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class InitTest {
 	@Autowired
 	private EntityManagerFactory entityManager;
+	@Autowired
+	private EmployeeRepository eDao;
 	@Test
 	public void testHbm2ddl(){
 		
+	}
+	@Test
+	public void testCustomizedRepository(){
+		eDao.doCustomizedMethod();
 	}
 }
