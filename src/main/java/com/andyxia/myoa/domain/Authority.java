@@ -36,10 +36,7 @@ public class Authority implements Serializable {
 	private Authority parent;
 	@OneToMany(mappedBy="parent", cascade=CascadeType.ALL,fetch=FetchType.EAGER)
 	private Set<Authority> children = new HashSet<Authority>();
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(
-			name = "jt_role_authority"		
-		)
+	@ManyToMany(fetch = FetchType.EAGER,mappedBy="authorities")
 	private Set<Role> roles;
 	private String url;
 	public String getUrl() {

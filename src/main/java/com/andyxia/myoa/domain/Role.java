@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
@@ -21,17 +22,22 @@ public class Role implements Serializable {
     @GeneratedValue
     @Column(name="id", unique = true, nullable = false)
 	private int id;
-	@Column(name = "name")
-	private String name;
+	@Column(name = "department")
+	private String department;
+	@Column(name = "title")
+	private String title;
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(
-			name = "jt_role_authority"		
+			name = "jt_role_authority",
+			joinColumns={
+					@JoinColumn(name="role_id")
+			},
+			inverseJoinColumns={
+					@JoinColumn(name="authority_id")
+			}
 		)
 	private Set<Authority> authorities;
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(
-			name = "jt_employee_role"		
-		)
+	@ManyToMany(fetch = FetchType.EAGER,mappedBy="roles")
 	private Set<Employee> employees;
 	public int getId() {
 		return id;
@@ -39,13 +45,22 @@ public class Role implements Serializable {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
 
+	public String getDepartment() {
+		return department;
+	}
+	public void setDepartment(String department) {
+		this.department = department;
+	}
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 	public Set<Employee> getEmployees() {
 		return employees;
 	}
