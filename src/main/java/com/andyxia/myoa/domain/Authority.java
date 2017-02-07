@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -24,14 +25,14 @@ public class Authority implements Serializable {
 	 */
 	private static final long serialVersionUID = -8205326672961136192L;
 	@Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="id", unique = true, nullable = false)
 	private int id;
 	@Column(name = "name")
 	private String name;
 	@Column(name = "description")
 	private String description;
-	@ManyToOne(cascade=CascadeType.ALL)
+	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
 	@JoinColumn(name="parent_id")
 	private Authority parent;
 	@OneToMany(mappedBy="parent", cascade=CascadeType.ALL,fetch=FetchType.EAGER)

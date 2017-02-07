@@ -1,15 +1,21 @@
 package com.andyxia.myoa.domain;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 @Entity
 @Table(name = "t_role")
@@ -19,13 +25,18 @@ public class Role implements Serializable {
 	 */
 	private static final long serialVersionUID = -4748728109218701804L;
 	@Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="id", unique = true, nullable = false)
 	private int id;
 	@Column(name = "department")
 	private String department;
 	@Column(name = "title")
 	private String title;
+	/*@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+	@JoinColumn(name="parent_id")
+	private Role parent;
+	@OneToMany(mappedBy="parent",cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+	private Set<Role> children = new HashSet<Role>();*/	
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(
 			name = "jt_role_authority",

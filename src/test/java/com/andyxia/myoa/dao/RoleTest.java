@@ -1,6 +1,7 @@
 package com.andyxia.myoa.dao;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.junit.Test;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.andyxia.myoa.domain.Authority;
 import com.andyxia.myoa.domain.Role;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -16,6 +18,8 @@ import com.andyxia.myoa.domain.Role;
 public class RoleTest {
 	@Autowired
 	private RoleRepository rdao;
+	@Autowired
+	private AuthorityRepository adao;
 	
 	@Test
 	public void testAdd(){
@@ -34,5 +38,26 @@ public class RoleTest {
 		rSet.add(r3);
 		rdao.save(rSet);
 	}
+	
+	@Test
+	public void testAddAuthorities(){
+		List<Role> roles = rdao.findByDepartment("Finance");
+		Role role = roles.get(0);
+		System.out.println(role.getDepartment());
+		List<Authority> authorities = adao.findAllFatherMotions();
+		role.setAuthorities(new HashSet<Authority>(authorities));
+		rdao.save(role);
+	}
+	
+	@Test
+	public void testLoadAuthorities(){
+		Role role = rdao.findOne(6);
+		Set<Authority> Authorities = role.getAuthorities();
+		for(Authority a:Authorities){
+			System.out.println(a.getName());
+		}
+	}
+	
+	
 
 }
