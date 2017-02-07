@@ -14,6 +14,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.andyxia.myoa.domain.Authority;
 
@@ -40,6 +41,10 @@ public class AuthorityTest {
 		a12.setName("浏览本人信息");
 		a12.setParent(a1);
 		alist.add(a12);
+		Authority a13 = new Authority();
+		a12.setName("浏览所有员工信息");
+		a12.setParent(a1);
+		alist.add(a13);
 		Authority a2 = new Authority();
 		a2.setName("申请");
 		alist.add(a2);
@@ -47,12 +52,20 @@ public class AuthorityTest {
 		a21.setName("申请请假");
 		a21.setParent(a2);
 		alist.add(a21);
-		adao.save(alist);	
+		adao.save(alist);
 	}
 	
 	@Test
-	public void testQuery(){
-		System.out.println(adao.findAllFatherMotions().get(1).getName().toString());
+	public void testModify(){
+		Authority a = adao.findOne(2);
+		a.setName("浏览公告");
+		adao.save(a);
+	}
+
+	@Test
+	public void testDel(){
+		Authority a = adao.findOne(16);
+		adao.delete(a);
 	}
 
 }

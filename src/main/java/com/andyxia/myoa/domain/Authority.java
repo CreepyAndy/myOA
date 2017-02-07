@@ -35,7 +35,7 @@ public class Authority implements Serializable {
 	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
 	@JoinColumn(name="parent_id")
 	private Authority parent;
-	@OneToMany(mappedBy="parent", cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="parent",fetch=FetchType.EAGER)
 	private Set<Authority> children = new HashSet<Authority>();
 	@ManyToMany(fetch = FetchType.EAGER,mappedBy="authorities")
 	private Set<Role> roles;

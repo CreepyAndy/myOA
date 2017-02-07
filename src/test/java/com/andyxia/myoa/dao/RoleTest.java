@@ -44,7 +44,7 @@ public class RoleTest {
 		List<Role> roles = rdao.findByDepartment("Finance");
 		Role role = roles.get(0);
 		System.out.println(role.getDepartment());
-		List<Authority> authorities = adao.findAllFatherMotions();
+		List<Authority> authorities = adao.queryAllFatherMotions();
 		role.setAuthorities(new HashSet<Authority>(authorities));
 		rdao.save(role);
 	}
