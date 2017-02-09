@@ -9,4 +9,5 @@ import com.andyxia.myoa.domain.Employee;
 
 public interface EmployeeRepository extends JpaRepository<Employee, Integer>,EmployeeRepositoryCustom{
 	List<Employee> findByGuid(String guid);
+	Employee findOneByGuid(String guid);
 }

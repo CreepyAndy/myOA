@@ -32,12 +32,12 @@ public class Authority implements Serializable {
 	private String name;
 	@Column(name = "description")
 	private String description;
-	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
 	@JoinColumn(name="parent_id")
 	private Authority parent;
-	@OneToMany(mappedBy="parent",fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="parent",fetch=FetchType.LAZY)
 	private Set<Authority> children = new HashSet<Authority>();
-	@ManyToMany(fetch = FetchType.EAGER,mappedBy="authorities")
+	@ManyToMany(fetch = FetchType.LAZY,mappedBy="authorities")
 	private Set<Role> roles;
 	private String url;
 	public String getUrl() {

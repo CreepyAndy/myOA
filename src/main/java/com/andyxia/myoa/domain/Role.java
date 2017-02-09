@@ -48,7 +48,7 @@ public class Role implements Serializable {
 			}
 		)
 	private Set<Authority> authorities;
-	@ManyToMany(fetch = FetchType.EAGER,mappedBy="roles")
+	@ManyToMany(fetch = FetchType.LAZY,mappedBy="roles")
 	private Set<Employee> employees;
 	public int getId() {
 		return id;
