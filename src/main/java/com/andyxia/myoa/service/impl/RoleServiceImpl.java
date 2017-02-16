@@ -33,6 +33,7 @@ public class RoleServiceImpl implements RoleService{
 		if(role.getAuthorities().contains(authority)==false)
 			throw new AuthorityException("deleting authority doesn't exist in the role.");
 		role.getAuthorities().remove(authority);
+		rdao.save(role);
 	}
 
 	@Override
