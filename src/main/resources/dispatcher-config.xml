@@ -13,6 +13,9 @@
      	http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 
 	<context:component-scan base-package="com.andyxia.myoa" />
+	<mvc:interceptors>
+		<bean class="com.andyxia.myoa.interceptor.AuthorityInterceptor"></bean>
+	</mvc:interceptors>
 	<mvc:annotation-driven />
 	<mvc:default-servlet-handler />
 	<bean id="viewResolver"

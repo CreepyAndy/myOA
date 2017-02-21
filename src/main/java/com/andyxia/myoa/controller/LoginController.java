@@ -3,11 +3,13 @@ package com.andyxia.myoa.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
+@RequestMapping(value = "/login")
 public class LoginController {
-	@RequestMapping(value="/index",method=RequestMethod.GET)
-	public String index(){
+	@RequestMapping(value="",method=RequestMethod.POST)
+	public String login(){
 		return "/";
 	}
 }

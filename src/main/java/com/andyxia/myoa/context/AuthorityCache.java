@@ -22,7 +22,7 @@ import com.andyxia.myoa.domain.Role;
  * @author axia021
  *
  */
-@Scope("singleton")
+
 @Service
 public class AuthorityCache {
 	private Map<Integer,Authority> authorityMap = new HashMap<>();
