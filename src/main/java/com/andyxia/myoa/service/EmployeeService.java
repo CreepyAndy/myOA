@@ -12,4 +12,5 @@ public interface EmployeeService {
 	public Employee addNewEmployee(Employee e);
 	public Employee updateOneEmployee(Employee e);
 	public Set<Authority> getAuthority(String guid);
+	public boolean verifyUser(String guid,String psw);
 }

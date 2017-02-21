@@ -18,11 +18,14 @@ public class AuthorityInterceptor extends HandlerInterceptorAdapter{
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-		if(request.getSession().getAttribute("user")==null){
-			response.sendRedirect("/welcome.html");
-			return false;
-		}
-		return true;
+		String uri = request.getRequestURI();
+		System.out.println(uri);
+		if(uri.equals("/myoa/login.action"))
+			return true;
+		if(request.getSession().getAttribute("user")!=null)			
+			return true;
+		response.sendRedirect("welcome.html");
+		return false;
 	}
 	
 }

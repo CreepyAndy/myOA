@@ -60,6 +60,7 @@ CREATE TABLE `jt_employee_role` (
 
 LOCK TABLES `jt_employee_role` WRITE;
 /*!40000 ALTER TABLE `jt_employee_role` DISABLE KEYS */;
+INSERT INTO `jt_employee_role` VALUES (1,3),(1,4);
 /*!40000 ALTER TABLE `jt_employee_role` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -86,6 +87,7 @@ CREATE TABLE `jt_role_authority` (
 
 LOCK TABLES `jt_role_authority` WRITE;
 /*!40000 ALTER TABLE `jt_role_authority` DISABLE KEYS */;
+INSERT INTO `jt_role_authority` VALUES (3,1),(4,1),(4,2);
 /*!40000 ALTER TABLE `jt_role_authority` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -135,7 +137,7 @@ CREATE TABLE `t_employee` (
   `status` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UK_i4jitgahxdiai79pskwtxdj9f` (`guid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -144,6 +146,7 @@ CREATE TABLE `t_employee` (
 
 LOCK TABLES `t_employee` WRITE;
 /*!40000 ALTER TABLE `t_employee` DISABLE KEYS */;
+INSERT INTO `t_employee` VALUES (1,'andyxia49@gmail.com','axia021','Andy Xia','18217265619','1234',NULL),(2,'zhangsan@163.com','rzhang067','San Zhang','15900676628','1234',NULL);
 /*!40000 ALTER TABLE `t_employee` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -181,4 +184,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-02-07 15:06:51
+-- Dump completed on 2017-02-21 17:25:53

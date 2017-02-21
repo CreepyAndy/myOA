@@ -52,4 +52,12 @@ public class EmployeeServiceImpl implements EmployeeService{
 		return eAuthorities;
 	}
 
+	@Override
+	public boolean verifyUser(String guid, String psw) {
+		Employee employee = edao.findOneByGuid(guid);
+		if(employee.getPsw().equals(psw)==true)
+			return true;
+		return false;
+	}
+
 }
