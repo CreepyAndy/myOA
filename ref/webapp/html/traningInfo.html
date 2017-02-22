@@ -1,0 +1,37 @@
+<div ng-controller="trainingRecordController">
+	<div>
+			<div class="section personal-information">
+				<p class="title">
+					<span>Training Information</span>
+				</p>
+			</div>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Employee ID</th>
+						<th>Employee Name</th>
+						<th>GDC Start Date</th>
+						<th>Category</th>
+						<th>Completed</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="record in allTrainingRecord |orderBy:['-completed','-gdcStartDate']">
+						<td ng-bind="record.employeeID"></td>
+						<td ng-bind="record.emplName"></td>
+						<td ng-bind="record.gdcStartDate | date:'yyyy-MM-dd'"></td>
+						<td ng-bind="record.categoryName"></td>
+						<td>
+		                    <a ng-show="record.completed" href="javascript:;" class="fa fa-check fa-lg" ng-click="editCompleted(record)"></a>
+							<a ng-show="!record.completed" href="javascript:;" class="fa fa-times fa-lg" ng-click="editCompleted(record)"></a>
+		                </td>
+		               <!-- <td ng-bind="record.trainingDate"></td>
+		                <td>
+		                    <a href="javascript:;" title="edit" class="fa fa-pencil-square-o fa-lg" ng-click="edit(record)"></a>
+		                    <a href="javascript:;" class="fa fa-floppy-o fa-lg" ></a>
+		                </td> -->
+					</tr>
+				</tbody>
+			</table>
+		</div>	
+</div>

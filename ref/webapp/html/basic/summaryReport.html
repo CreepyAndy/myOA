@@ -1,0 +1,45 @@
+<div ng-controller="sumarryReportController">
+	<div class="contact-title">
+	    <h2>Home</h2>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-6">
+            <div style="padding-top: 10px">
+                <h4>To Do</h4>
+            </div>
+            <div class="list-group">
+                <a href class="list-group-item" ui-sref="approveApp">
+                    <span class="badge bg-dark" style="background-color: #ff8b00" ng-hide = "summaryReport.leaveApprove == 0">{{summaryReport.leaveApprove}}</span>
+                    <i class="fa fa-bell fa-fw m-r-xs"></i> Leave Application (请假申请)
+                </a>
+                <a href class="list-group-item" ui-sref="certificateInfo">
+                    <span class="badge bg-warning" style="background-color: #ff8b00" ng-hide = "summaryReport.certificateApprove == 0">{{summaryReport.certificateApprove}}</span>
+                    <i class="fa fa-bell fa-fw m-r-xs"></i> Certification Request (证明申请)
+                </a>
+                <a href class="list-group-item" ui-sref="dimissionApplicationApprove">
+                    <span class="badge bg-info" style="background-color: #ff8b00" ng-hide = "summaryReport.terminationApprove == 0">{{summaryReport.terminationApprove}}</span>
+                    <i class="fa fa-bell fa-fw m-r-xs"></i> Termination Application (离职申请)
+                </a>
+            </div>
+            
+            <div style="padding-top: 10px">
+                <h4>My Request</h4>
+            </div>
+			<div class="list-group">
+				<a href class="list-group-item" ui-sref="leaveList">
+					<span class="badge badge-empty" style="background-color: #ff8b00" ng-hide = "summaryReport.leaveRequest == 0">{{summaryReport.leaveRequest}}</span>
+					<i class="fa fa-bell fa-fw m-r-xs"></i> Leave Application (请假申请)
+				</a>
+				<a href class="list-group-item" ui-sref="certificateList">
+					<span class="badge bg-info" style="background-color: #ff8b00" ng-hide = "summaryReport.certificateRequest == 0">{{summaryReport.certificateRequest}}</span>
+					<i class="fa fa-bell fa-fw m-r-xs"></i> Certification Request (证明申请)
+				</a>
+				<a href class="list-group-item" ui-sref="dimissionApplication">
+					<span class="badge bg-success" style="background-color: #ff8b00" ng-hide = "summaryReport.terminationRequest == 0">{{summaryReport.terminationRequest}}</span>
+					<i class="fa fa-bell fa-fw m-r-xs"></i> Termination Application (离职申请)
+				</a>
+			</div>
+		</div>
+	</div>
+</div>

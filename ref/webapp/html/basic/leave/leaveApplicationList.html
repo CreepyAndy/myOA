@@ -1,0 +1,377 @@
+<div ng-controller="LeaveApplicationController" ng-init="leaveListInit()">
+    <div class="contact-title">
+        <h2>Leave Application</h2>
+    </div>
+    <div class="div-padding-top">
+        <table>
+            <tr>
+                <td><label class="control-label">Search by Date:&nbsp;&nbsp;</label></td>
+                <td><input ng-click="openStartDate()" ng-model="select.startDate" readonly class="form-control"
+                           uib-datepicker-popup ng-model="select.startDate" is-open="startDate.opened"
+                           datepicker-options="dateOptions" required close-text="Close"
+                           alt-input-formats="altInputFormats" placeholder="From"/></td>
+                <td>&nbsp;-&nbsp;</td>
+                <td><input ng-click="openEndDate()" ng-model="select.endDate" readonly class="form-control"
+                           uib-datepicker-popup ng-model="select.endDate" is-open="endDate.opened"
+                           datepicker-options="dateOptions" required close-text="Close"
+                           alt-input-formats="altInputFormats" placeholder="To"/></td>
+            </tr>
+            <tr ng-show="isHr != -1">
+                <td>&nbsp;
+                <td>
+            </tr>
+            <tr ng-show="isHr != -1">
+                <td><label class="control-label">Search by Employee ID:&nbsp;</label></td>
+                <td><input class="form-control" type="text" ng-model="employeeID" placeholder="Employee ID."/>
+                </td>
+            </tr>
+            <tr>
+                <td>&nbsp;
+                <td>
+            </tr>
+            <tr>
+                <td><label class="control-label">Search by Leave Type:&nbsp;</label></td>
+                <td><select style="font-size: 15px" ng-model="leaveType" class="form-control"
+                            ng-options="leaveType.leaveTypeName for leaveType in leaveTypeList">
+                    <option value="">---Please select---</option>
+                </select>
+                </td>
+            </tr>
+
+            <tr>
+                <td>&nbsp;
+                <td>
+            </tr>
+            <tr>
+                <td><label class="control-label">Search by Status:&nbsp;</label></td>
+                <td><select style="font-size: 15px" ng-model="_status" class="form-control"
+                            ng-options="_status.name for _status in status">
+                    <option value="">---Please select---</option>
+                </select>
+                </td>
+            </tr>
+            <tr>
+                <td>&nbsp;
+                <td>
+            </tr>
+            <tr ng-show="isHr != -1">
+                <td><label class="control-label">Search by Year:&nbsp;</label></td>
+                <td><select style="font-size: 15px" ng-model="searchByYear" class="form-control"
+                            ng-change="leaveListInit()">
+                    <option value="0">Show the latest 100</option>
+                    <option value="2016">2016</option>
+                    <option value="2017">2017</option>
+                </select>
+                </td>
+            </tr>
+        </table>
+
+    </div>
+    <div class="search-result" context-menu="menuOptions">
+        <div class="form-button">
+            <!-- <button type="button" class="btn " ng-click="queryApproveLeaveList()">Search</button> -->
+            <button ng-show="isHr != -1 && _status.id == 5" id="markBtn" type="button" class="btn "
+                    ng-click="mark(selected)">Mark as done
+            </button>
+            <!-- <button type="button" class="btn " ng-click="saveData()">DownLoad
+                File</button> -->
+
+        </div>
+        <table class="table">
+            <thead>
+            <tr>
+                <!-- <th class="check-box"><input type="checkbox" class="checkbox"
+                    id="checkbox" ng-model="page.allcheck" ng-click="selectAll()">
+                    <label for="checkbox"></label></th> -->
+                <th></th>
+                <th>Employee ID.</th>
+                <th>Name</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Total Days</th>
+                <th>Leave Type</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Attachment</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="employee in filtered = (leavelist | filter:searchByEmpNum | filter:searchByDate | filter:{leaveTypeId:leaveType.leaveTypeId} | filter:searchByStatus ) | filter:searchByEmpNum | filter:searchByDate | filter:searchByStatus | filter:{leaveTypeId:leaveType.leaveTypeId} | start: (currentPage - 1) * pageSize | limitTo: pageSize ">
+                <td class="check-box">
+                    <input type="checkbox" class="checkbox" id="{{employee.leaveAppId}}" name="{{employee.leaveAppId}}"
+                           ng-click="updateSelection($event,employee)" ng-model="employee.check"
+                           ng-checked="isSelected(employee.leaveAppId)">
+                    <label for="{{employee.leaveAppId}}"
+                           ng-show="isHr != -1 && employee.appStatusCode == 5 && _status.id == 5"></label>
+                </td>
+                <td>{{employee.emplNo}}</td>
+                <td ng-click="getApplication(employee)"
+                    data-toggle="modal" data-target="#applicationInfoModal"
+                    data-backdrop="static" style="cursor:pointer;color: #FF8B00">{{employee.emplName}}
+                </td>
+                <td>
+                    <span ng-bind="employee.startTime" ng-show="!employee.isEdit"></span>
+                    <input type="date" ng-model="employee.startDate" ng-show="employee.isEdit"/>
+                    <a ng-if="isHr != -1" href="javascript:;" title="edit" class="fa fa-pencil-square-o fa-lg"
+                       ng-click="editStart(employee)"></a>
+                </td>
+                <td>
+                    <span ng-bind="employee.endTime" ng-show="!employee.isEdit2"></span>
+                    <input type="date" ng-model="employee.endDate" ng-show="employee.isEdit2"/>
+                    <a ng-if="isHr != -1" href="javascript:;" title="edit" class="fa fa-pencil-square-o fa-lg"
+                       ng-click="editEnd(employee)"></a>
+                </td>
+                <!--<td>{{employee.endTime}}</td>-->
+                <td>{{employee.totalDays}}</td>
+                <td>{{showLeaveTypeName(employee.leaveTypeId)}}</td>
+                <td>{{employee.description}}</td>
+                <td>{{statusShow(employee.appStatusCode)}}</td>
+                <td>
+                    <a ng-click="showAttachmentList(employee)" ng-show="employee.leaveUploadFile" data-toggle="modal"
+                       data-target="#leaveAppAttachmentModal" data-backdrop="static"
+                       style="cursor:pointer;color: #FF8B00">view</a>
+                    <div ng-show="!employee.leaveUploadFile">-</div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="pagination-content">
+            <uib-pagination total-items="filtered.length" ng-model="currentPage" max-size="5" class="pagination-sm"
+                            boundary-link-numbers="true" previous-text="&lsaquo;" next-text="&rsaquo;"
+                            num-pages="noOfPages"
+                            items-per-page=pageSize></uib-pagination>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="leaveAppAttachmentModal" tabindex="-1"
+         role="dialog" aria-labelledby="exampleModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closeButton">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="exampleModalLabel">Leave Application Attachment</h4>
+                </div>
+                <div>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>File Name</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="file in files">
+                            <td ng-click="download(file)" style="cursor:pointer;">{{file}}</td>
+                            <!-- <td ng-click="download(objToString(file))" data-toggle="modal" data-target="#downloadtemplateModal" data-backdrop="static" style="cursor:pointer;">{{objToString(file)}}</td>
+                            <td ng-show="isHr != -1"><a ng-click="deleteFileDialog(objToString(file))" "data-toggle="modal" data-target="#deleteModal" data-backdrop="static" style="cursor:pointer;">delete</a></td> -->
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="applicationInfoModal" tabindex="-1"
+         role="dialog" aria-labelledby="exampleModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div id="print">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                                id="infoCloseButton">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="exampleModalLabelh4">Leave of Absence Application Form</h4>
+                    </div>
+                    <div class="section position-information">
+                        <div class="position-content" style="padding: 20px;">
+                            <div class="section personal-information">
+                                <div class="personal-content">
+                                    <div>
+                                        <div class="row">
+                                            <div class="form-group col-sm-12">
+                                                <h4 class="modal-title">Staff use only</h4>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-sm-6">
+                                                <label for="name" class="col-sm-4 col-xs-6 control-label">Staff:</label>
+                                                <div class="col-sm-5 col-xs-6">
+                                                    <span ng-bind="modal.emplName"></span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-sm-6">
+                                                <label for="no" class="col-sm-4 col-xs-6 control-label">Employee
+                                                    ID:</label>
+                                                <div class="col-sm-5 col-xs-6">
+                                                    <span ng-bind="modal.emplNo"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-sm-6">
+                                                <label for="province"
+                                                       class="col-sm-4 col-xs-6 control-label">Domain:</label>
+                                                <div class="col-sm-5 col-xs-6">
+                                                    <span ng-bind="modal.domain"></span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-sm-6">
+                                                <label for="province"
+                                                       class="col-sm-4 col-xs-6 control-label">Level:</label>
+                                                <div class="col-sm-5 col-xs-6">
+                                                    <span ng-bind="modal.jobTitle"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-sm-6">
+                                                <label for="leaveType"
+                                                       class="col-sm-4 col-xs-6 control-label">Leave Type:</label>
+                                                <div class="col-sm-8 col-xs-6">
+                                                    <span>{{showLeaveTypeName(modal.leaveTypeId)}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-sm-6">
+                                                <label for="startDate"
+                                                       class="col-sm-4 col-xs-6 control-label">Start Date:</label>
+                                                <div class="col-sm-5 col-xs-6">
+                                                    <span ng-bind="modal.startTime"></span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-sm-6">
+                                                <label for="endDate"
+                                                       class="col-sm-4 col-xs-6 co ntrol-label">End Date:</label>
+                                                <div class="col-sm-5 col-xs-6">
+                                                    <span ng-bind="modal.endTime"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-sm-6">
+                                                <label for="id-number" class="col-sm-4 col-xs-6 control-label">Total
+                                                    Days:</label>
+                                                <div class="col-sm-5 col-xs-6">
+                                                    <span ng-bind="modal.totalDays"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="row">
+                                            <div class="form-group col-sm-12">
+                                                <h4 class="modal-title">Approvals use only</h4>
+                                            </div>
+                                        </div>
+                                        <!-- 	<div class="form-group col-sm-6">
+                                                <label for="id-number" class="col-sm-4 col-xs-6 control-label">Description:</label>
+                                                <div class="col-sm-5 col-xs-6">
+                                                    <span ng-bind="modal.description"></span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-sm-6">
+                                                <label for="id-number" class="col-sm-4 col-xs-6 control-label">Status:</label>
+                                                <div class="col-sm-5 col-xs-6">
+                                                    <span>{{statusShow(modal.appStatusCode)}}</span>
+                                                </div>
+                                            </div> -->
+                                        <div class="row">
+                                            <div class="form-group col-sm-6">
+                                                <label for="name" class="col-sm-4 col-xs-6 control-label">Staff
+                                                    Name:</label>
+                                                <div class="col-sm-5 col-xs-6">
+                                                    <span ng-bind="modal.emplName"></span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-sm-6">
+                                                <label for="name" class="col-sm-4 col-xs-6 control-label">Application
+                                                    Date:</label>
+                                                <div class="col-sm-5 col-xs-6">
+                                                    <span ng-bind="modal.appTime"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-sm-6">
+                                                <label for="id-number" class="col-sm-4 col-xs-6 control-label">Coach/PM/RL:</label>
+                                                <div class="col-sm-5 col-xs-6">
+                                                    <span>{{showNameByGuid(modal.coachGuid)}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-sm-6">
+                                                <label for="id-number" class="col-sm-4 col-xs-6 control-label">Approval
+                                                    Date:</label>
+                                                <div class="col-sm-5 col-xs-6">
+                                                    <span ng-bind="modal.coachOptTime"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-sm-6">
+                                                <label for="id-number" class="col-sm-4 col-xs-6 control-label">OM
+                                                    :</label>
+                                                <div class="col-sm-5 col-xs-6">
+                                                    <span>{{showNameByGuid(modal.omguid)}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-sm-6">
+                                                <label for="id-number" class="col-sm-4 col-xs-6 control-label">Approval
+                                                    Date:</label>
+                                                <div class="col-sm-5 col-xs-6">
+                                                    <span ng-bind="modal.omoptTime"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-sm-6">
+                                                <label for="id-number" class="col-sm-4 col-xs-6 control-label">GM
+                                                    :</label>
+                                                <div class="col-sm-5 col-xs-6">
+                                                    <span>{{showNameByGuid(modal.gmguid)}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-sm-6">
+                                                <label for="id-number" class="col-sm-4 col-xs-6 control-label">Approval
+                                                    Date:</label>
+                                                <div class="col-sm-5 col-xs-6">
+                                                    <span ng-bind="modal.gmoptTime"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-sm-6">
+                                                <label for="id-number" class="col-sm-4 col-xs-6 control-label">HRM
+                                                    :</label>
+                                                <div class="col-sm-5 col-xs-6">
+                                                    <span>{{showNameByGuid(modal.hrmguid)}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-sm-6">
+                                                <label for="id-number" class="col-sm-4 col-xs-6 control-label">Approval
+                                                    Date:</label>
+                                                <div class="col-sm-5 col-xs-6">
+                                                    <span ng-bind="modal.gmoptTime"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <button type="button" class='btn btn-info' id="printButton" ng-click="print()">
+                                            Print
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

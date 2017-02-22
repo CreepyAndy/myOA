@@ -1,0 +1,91 @@
+.github.ribbon {
+    position: fixed;
+    display: block;
+    top: 40px;
+    right: 0;
+    border: 0;
+    z-index: 1001;
+}
+
+.prettyprint {
+    padding: 10px!important;
+}
+
+#wrap {
+    padding-top: 70px;
+}
+
+#home h1 {
+    margin-bottom: 30px;
+}
+
+#demo,
+#examples,
+#support,
+#download {
+    padding-top: 40px;
+}
+
+.container {
+    width: 100%;
+    height: 100%;
+    color: #400800;
+    padding: 0;
+}
+
+.table_group_ev {
+    font-size: 10px !important;
+}
+
+.table_group_ev>thead>tr>td,
+.table_group_ev>tbody>tr>td,
+.signature-table .signature-thead {
+    border: 1px solid grey;
+    vertical-align: middle;
+}
+
+
+/*tr:last-child{
+	border-bottom:1px solid grey !important;
+}*/
+
+.border_bottom {
+    border: none !important;
+    border-left: 1px solid grey !important;
+    border-bottom: 1px solid grey !important;
+}
+
+.border_no {
+    border: 0px !important;
+    border-left: 1px solid grey !important;
+}
+
+.table>thead>tr>.signature-thead {
+    background: #ccc;
+    color: #fff;
+    border: none;
+}
+
+.table_group_ev .group-thead {
+    border: none;
+}
+
+.table_group_ev>tbody>tr>.interview-time,
+.table_group_ev>tbody>tr>.group-no {
+    border-bottom: 1px solid #fff;
+}
+
+.table_group_ev>tbody>tr:last-child .interview-time,
+.table_group_ev>tbody>tr:last-child .group-no {
+    border: 1px solid grey;
+}
+
+@media print {
+    .table_group_ev>thead>tr>td,
+    .table_group_ev>tbody>tr>td {
+        line-height: 21.9px;
+    }
+    table {
+        page-break-after: always;
+    }
+}

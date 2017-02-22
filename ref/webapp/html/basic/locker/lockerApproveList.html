@@ -1,0 +1,82 @@
+<div ng-controller="lockerApproveListController" ng-init="approveListInit()">
+    <div class="contact-title">
+        <h2>Locker Application</h2>
+    </div>
+    <div class="search-result" context-menu="menuOptions">
+        <div>
+            <div class="form-button">
+                <button type="button" class="btn " ng-click="approve(selected)" ng-disabled="selected.length==0">
+                    Approve
+                </button>
+
+                <button type="button" class="btn" data-toggle="modal" data-target="#RejectComments" ng-disabled="selected.length==0">
+                    Reject
+                </button>
+            </div>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>Guid</th>
+                    <th>Working Place</th>
+                    <th>Locker SerialNumber</th>
+                    <th>Start Date</th>
+                    <th>Return Date</th>
+                    <th>Description</th>
+                    <th>Apply Type</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr ng-repeat="locker in approveList">
+                    <td class="check-box">
+                        <input type="checkbox" class="checkbox"
+                               id="{{locker.aId}}" name="{{locker.aId}}"
+                               ng-click="updateSelection($event,locker)"
+                               ng-model="locker.check" ng-checked="isSelected(locker.aId)">
+                        <label for="{{locker.aId}}"></label>
+                    </td>
+                    <td>{{locker.guid}}</td>
+                    <td>{{locker.projectRoom}}</td>
+                    <td>{{locker.serialNumber}}</td>
+                    <td>{{locker.startDate | date: 'yyyy-MM-dd'}}</td>
+                    <td>{{locker.returnDate | date: 'yyyy-MM-dd'}}</td>
+                    <td>{{locker.description}}</td>
+                    <td>{{typeShow(locker.applyType)}}</td>
+                    <td>{{statusShow(locker.status)}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- modal email by dww -->
+        <div class="modal fade" id="RejectComments" tabindex="-1" role="dialog"
+             aria-labelledby="exampleModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"
+                                aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="exampleModalLabel">Reject message</h4>
+                    </div>
+                    <div class="editor-wrap" style="padding: 15px;">
+                        <textarea ng-model="comments"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <form id="uploadattachment" class="email-upload"
+                              enctype="multipart/form-data"></form>
+                        <button type="button" style="margin-top: 12px"
+                                class="btn btn-default" data-dismiss="modal">Close
+                        </button>
+                        <button type="button" style="margin-top: 12px"
+                                class="btn btn-warning" ng-click="reject(selected)" ng-disabled="!comments">Save
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

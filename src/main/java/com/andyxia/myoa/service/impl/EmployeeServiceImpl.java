@@ -60,4 +60,9 @@ public class EmployeeServiceImpl implements EmployeeService{
 		return false;
 	}
 
+	@Override
+	public Employee getEmployee(String guid) {	
+		return edao.findOneByGuid(guid);
+	}
+
 }

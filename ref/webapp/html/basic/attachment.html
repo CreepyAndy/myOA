@@ -1,0 +1,70 @@
+<div ng-controller="attachmentController">
+	<div class="section personal-information">
+		<label style ="font-size: 20px">Attachment Type:
+	        <select style ="font-size: 15px" ng-options="attachmentType.name for attachmentType in data.attachmentTypes track by attachmentType.id" ng-model="data.chosen"  ng-change="getAllFiles(data.chosen.name)">
+	        </select>
+	    </label>
+ 	</div>
+ 	<br/>
+ 	<div class="section personal-information">
+		<p class="title" ng-show="data.chosen.id == 1"><span>Termination Request Forms</span></p>
+		<p class="title" ng-show="data.chosen.id == 2"><span>Leave Application Forms</span></p>
+		<p class="title" ng-show="data.chosen.id == 3"><span>Certification Forms</span></p>
+	</div>
+ 	<br/>
+ 	<div class="form-button" ng-show="isHr != -1">
+        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#addFileModel" data-backdrop="static" style="cursor:pointer;"><i class="fa fa-cloud-upload" aria-hidden="true"></i> Upload</button>
+    </div>
+	<table class="table">
+        <thead>
+            <tr>
+                <th>File Name</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="file in files">
+            	<td ng-click="download(objToString(file))" data-toggle="modal" data-target="#downloadtemplateModal" data-backdrop="static" style="cursor:pointer;">{{objToString(file)}}</td>
+            	<td ng-show="isHr != -1">
+					<a ng-click="deleteFileDialog(objToString(file))" data-toggle="modal" data-target="#deleteModal" data-backdrop="static" style="cursor:pointer;">delete</a></td>
+            </tr>
+        </tbody>
+    </table>
+	<div class="modal fade" id="addFileModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+		<div class="modal-dialog" role="document">
+	    	<div class="modal-content">
+	             <div class="modal-header">
+	             	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	                	<span aria-hidden="true">&times;</span>
+	             	</button>
+	             	<h4 class="modal-title" id="exampleModalLabelUpload">Add {{data.chosen.name}} Form</h4>
+	       		</div>
+	            <form id="uploadForm" enctype="multipart/form-data">
+	            	<input type="file" id="file" name="file"  file-model="addFile" class="dropify"/>
+	     		</form>
+	      		<div class="modal-footer">
+	            	<button type="button" class='btn btn-warning' data-dismiss="modal">Close</button>
+	            	<button type="button" class="btn btn-warning" ng-disabled= "addFile == null" ng-click="upload()">Upload</button>
+	        	</div>
+	    	</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="deleteModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+		<div class="modal-dialog" role="document">
+	    	<div class="modal-content">
+	             <div class="modal-header">
+	             	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	                	<span aria-hidden="true">&times;</span>
+	             	</button>
+	             	<h4 class="modal-title" id="exampleModalLabeDel">Confirm to delete {{fileName}} ?</h4>
+	       		</div>
+	      		<div class="modal-footer">
+	            	<button type="button" class='btn btn-warning' data-dismiss="modal">Close</button>
+	            	<button type="button" class="btn btn-warning" ng-click="deleteFile()">Delete</button>
+	        	</div>
+	    	</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" src="resources/js/dropifyStyle.js"></script>

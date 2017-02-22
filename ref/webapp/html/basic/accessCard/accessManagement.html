@@ -1,0 +1,61 @@
+<div ng-controller="accessManagementController" ng-init="init()">
+
+    <div class="container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>GUID</th>
+                    <th>Date</th>
+                    <th>Card Type</th>
+                    <th>New Card NO.</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in record">
+                    <td ng-click="getInfo(item)" data-toggle="modal" data-target="#InfoModal"
+                        data-backdrop="static" style="cursor:pointer;color: #FF8B00">{{item.guid}}
+                    </td>
+                    <td>{{item.date}}</td>
+                    <td>{{item.type}}</td>
+                    <td>{{item.newCardNO}}</td>
+                    <td>{{showStatusName(item.status)}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="pagination-content">
+            <uib-pagination total-items="record.length" ng-model="currentPage" max-size="5" class="pagination-sm"
+                            boundary-link-numbers="true" previous-text="&lsaquo;" next-text="&rsaquo;"
+                            num-pages="noOfPages"
+                            items-per-page=pageSize></uib-pagination>
+        </div>
+    </div>
+
+    <div class="modal fade" id="InfoModal" tabindex="-1"
+         role="dialog" aria-labelledby="exampleModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div id="print">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                                id="infoCloseButton">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="exampleModalLabelh4">Update the new Card Number</h4>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">New Card NO.</span>
+                        <input type="text" class="form-control" ng-model="newCardNO">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class='btn btn-warning' data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-warning" ng-click="update(modalInfo)"
+                                ng-disabled="newCardNO == null"> Save
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

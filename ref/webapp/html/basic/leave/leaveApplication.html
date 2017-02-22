@@ -1,0 +1,227 @@
+<div ng-controller="LeaveApplicationController" ng-init="leaveInit()">
+    <div class="contact-title">
+        <h2>Leave Application</h2>
+    </div>
+    <form name="leaveApplicationForm" class="info-form" novalidate>
+        <div class="section position-information">
+            <p class="title">
+                <span>Employee Information</span>
+            </p>
+
+            <div class="position-content">
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                        <label class="col-sm-4 col-xs-6 control-label">Applicant:</label>
+                        <div class="col-sm-5 col-xs-6">{{employee.emplNo}} - {{employee.emplName }}</div>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label class="col-sm-4 col-xs-6 control-label">Title:</label>
+                        <div class="col-sm-5 col-xs-6">{{employee.jobTitle}}</div>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label class="col-sm-4 col-xs-6 control-label">Domain:</label>
+                        <div class="col-sm-5 col-xs-6">{{employee.supportingTeamName}}</div>
+                    </div>
+                    <div class="form-group col-sm-6">
+
+                        <label class="col-sm-4 col-xs-6 control-label">Coach/PM:
+                        </label>
+                        <div class="col-sm-5 col-xs-6">
+                            <select id="mySel1" class="form-control" data-live-search="true"
+                                    ng-model="employee.projectManagerID" ng-change="updatePM()">
+                                {{employee.projectManagerID}}
+                                <option ng-repeat="item in allEmployee|orderBy:'emplName'"
+                                        ng-selected="item.adName==employee.projectManagerGuid" value={{item.emplID}}>
+                                    {{item.emplName}}--{{item.adName}}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="form-group col-sm-6">
+                            <label style="color: #f00;" ng-model="leaveType">{{hint}}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section personal-information">
+            <p class="title">
+                <span>Leave Information</span>
+            </p>
+            <div class="personal-content">
+                <div class="row">
+                    <div class="form-group col-sm-12">
+                        <label class="col-sm-2 col-xs-3 control-label">
+                            <span>*</span>Leave Reason:
+                        </label>
+                        <div class="col-sm-5 col-xs-6">
+                            <select id="leaveType" ng-model="leaveType" required class="form-control" ng-change="count()"
+                                    ng-options="leaveType.leaveTypeName for leaveType in leaveTypeList">
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-sm-12">
+                        <label for="startDateTime" class="col-sm-2 col-xs-3 control-label"><span>*</span>Leave
+                            Time:</label>
+                        <div class="col-sm-5 col-xs-6">
+                            <input type="text" class="form-control" ng-change="count()"
+                                   ng-model="leaveApplication.startTime" id="starttime" placeholder="Start Time">
+                            <input type="text" class="form-control" ng-change="count()"
+                                   ng-model="leaveApplication.endTime" id="endtime" placeholder="End Time">
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-12">
+                        <label class="control-label" style="color: #f00;">AM:9:00~13:00 PM 13:00~17:30</label>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label class="col-sm-4 col-xs-6 control-label">
+                            <span>*</span>TotalDays:
+                        </label>
+                        <div class="col-sm-5 col-xs-6">
+                            {{ leaveApplication.totalDays }}
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label class="col-sm-4 col-xs-6 control-label">
+                            <span>*</span>Upload Certification:
+                        </label>
+                        <div class="col-sm-4 col-xs-6">
+                            <!--<label class="btn btn-warning">
+                                Browse Files <input type="file" style="display: none;" ng-file-model="files" multiple />
+                            </label>-->
+
+                            <button type=" button" class="btn btn-warning" data-toggle="modal"
+                                    data-target="#leaveUploadFiles"><i class="fa fa-cloud-upload"
+                                                                       aria-hidden="true"></i> Upload Files
+                            </button>
+                            <!-- <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#addFileModel" data-backdrop="static" style="cursor:pointer;">add</a></button> -->
+                            <p ng-repeat="file in files">{{file.name}}</p>
+                            <label style="color: #f00;" ng-show="flag=='importDone'">Upload Success</label>
+                        </div>
+                        <!--<div class="col-sm-4 col-xs-6">
+                            <button type=" button" class="btn btn-warning" ng-click="certificateUpload()"><i class="fa fa-cloud-upload" aria-hidden="true"></i> Upload</button>
+                        </div>-->
+                    </div>
+                    <div class="form-group col-sm-12">
+                        <div class="form-group col-sm-6">
+                            <label style="color: #f00;">
+                                {{leaveType.hint}}
+                            </label>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label style="color: #f00;">
+                                <span ng-show="leaveType.certificate != null">Please upload</span>
+                                {{leaveType.certificate}}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-12">
+
+                        <label class="col-sm-4 col-xs-6 control-label">
+                            <span ng-show="leaveType.leaveTypeName.includes('Other')">*</span>
+                            Description:
+                        </label>
+                        <div class="col-sm-10 col-xs-6">
+                            <textarea ng-show="!leaveType.leaveTypeName.includes('Other')"
+                                      ng-model="leaveApplication.description" name="description" required
+                                      placeholder="Description" class="survey_textarea"></textarea>
+                            <textarea ng-show="leaveType.leaveTypeName.includes('Other')"
+                                      ng-model="leaveApplication.description" name="description" required
+                                      placeholder="Please fill in the OT date." class="survey_textarea"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-button">
+            <input type="button" ng-click="submit()" class='btn btn-warning' value="submit" id="btn-submit">
+        </div>
+    </form>
+
+    <div class="modal fade" id="leaveUploadFiles" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Upload Attachment Form(Multiple files)</h4>
+                </div>
+                <form id="leaveuploadForm" enctype="multipart/form-data">
+                    <input type="file" id="file" name="file" ng-file-model="files" multiple class="dropify"/>
+                </form>
+                <div class="modal-footer">
+                    <button type="button" class='btn btn-warning' data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-warning" ng-click="certificateUpload()"
+                            ng-disabled="files.length == 0"> Upload
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $('#mySel1').select2();
+    $('#leaveType').select2();
+</script>
+<script type="text/javascript" src="resources/js/dropifyStyle.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $('#starttime').datetimepicker({
+            format: 'yyyy-mm-dd hh:ii',
+            todayBtn: 1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            //startDate: date,
+            forceParse: false
+        }).on("changeDate", function (ev) {
+            var transferdate = transferDate($("#starttime").val());//转时间日期
+            $('#endtime').datetimepicker('remove');
+            $('#endtime').datetimepicker({
+                format: 'yyyy-mm-dd hh:ii',
+                autoclose: 1,
+                'startDate': transferdate
+            })/* .on("changeDate",function(ev){
+             var enddate=$("#endtime").val();
+             setEndTime(enddate);
+             }) */;
+        });
+    });
+    $('#endtime').datetimepicker({
+        format: 'yyyy-mm-dd hh:ii',
+        language: 'zh-CN',
+        minView: 2,
+        autoclose: 1
+    }).on("changeDate", function (ev) {
+        var enddate = $("#endtime").val();
+        setEndTime(enddate);
+    });
+    function setEndTime(enddate) {
+        $('#starttime').datetimepicker('remove');
+        $('#starttime').datetimepicker({
+            format: 'yyyy-mm-dd hh:ii',
+            //language:  'zh-CN',
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            forceParse: false,
+            'endDate': transferDate(enddate)
+        });
+    }
+    // 将时间字符串转为date
+    function transferDate(data) {
+        var start_time = data;
+        var newTime = start_time.replace(/-/g, "-");
+        var transferdate = new Date(newTime);
+        return transferdate;
+    }
+    function transferTime(str) {
+        var newstr = str.replace(/-/g, '-');
+        var newdate = new Date(newstr);
+        var time = newdate.getTime();
+        return time;
+    }
+</script>

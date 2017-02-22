@@ -1,6 +1,7 @@
 package com.andyxia.myoa.controller;
 
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -13,7 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.andyxia.myoa.context.AuthorityCache;
+import com.andyxia.myoa.domain.Authority;
 import com.andyxia.myoa.domain.Employee;
+import com.andyxia.myoa.domain.Role;
 import com.andyxia.myoa.service.EmployeeService;
 
 @RestController
@@ -37,9 +40,12 @@ public class LoginController {
 		}
 		if(employeeMap.containsKey(guid)==false)
 			return new ModelAndView("redirect:welcome.html");
-		if(es.verifyUser(guid, password))
+		if(es.verifyUser(guid, password)){
 			//TODO
-			return new ModelAndView();
+			Employee employee = es.getEmployee(guid);
+			Set<Authority> authorities = es.getAuthority(guid);
+			return new ModelAndView().addObject("authorities",authorities);
+		}
 		else
 			return new ModelAndView("redirect:welcome.html");
 	}

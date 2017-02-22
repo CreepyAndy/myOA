@@ -1,0 +1,56 @@
+<div ng-controller="dimissionApplicationStatusController">
+<div class="contact-title">
+    <h2>Application Status</h2>
+</div>
+<div class="search-result" context-menu="menuOptions">
+ <div class="form-button">
+        <button type="button" class="btn btn-warning " ng-click="deleteSelected()">Resent E-mail</button>
+ </div>
+    <table class="table">
+        <thead>
+            <tr>
+            	<th></th>
+                <th>Guid</th>
+                <th>Employee ID</th>
+                <th>Name</th>
+                <th>Leave date</th>
+                <th>Apply date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="application in applicationHRList">
+                <td class="check-box">
+                    <input type="checkbox" class="checkbox" id="checkbox-{{application.dimissionAppId}}" ng-model="application.check" ng-checked="application.check">
+                    <label for="checkbox-{{application.dimissionAppId}}"></label>
+                </td>
+                <td ng-bind="application.dimissionApplication.guid" data-toggle="modal" data-target="#rejectModal" data-backdrop="static" style="cursor:pointer;"></td>
+                <td ng-bind="application.employeeRelationship.employeeID"></td>
+                <td ng-bind="application.employeeRelationship.name"></td>
+                <td ng-bind="application.dimissionApplication.lastWorkingDay"></td>
+                <td ng-bind="application.dimissionApplication.appTime"></td>
+                <td ng-bind="application.dimissionApplication.appStatusCode"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="modal fade" id="rejectModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="exampleModalLabel">Reject application</h4>
+            </div>
+            <div>
+            	<textarea class="survey_textarea"/>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-warning" ng-click="reject(application)">Import</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

@@ -1,0 +1,267 @@
+<div ng-controller="FreshTrainingCategoryController"
+	ng-init="FreshTrainingCategoryinit()">
+	<div class="contact-title">
+		<h2>Training Category Management</h2>
+	</div>
+	<div class="search-result" context-menu="menuOptions"
+		style="margin-top: 30px;">
+		<div class="form-button">
+			<button type="button" class="btn btn-warning"
+				ng-click="showTrainingCategoryAdd()">Add</button>
+		</div>
+		<table class="table">
+			<thead>
+				<tr>
+					<th></th>
+					<th>Category Name</th>
+					<th>Category Type</th>
+					<th>Remind Period</th>
+					<th>Due Days</th>
+					<th>Remind Template</th>
+					<th>DueDays Template</th>
+					<th>End Days</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="trainingcategoryinfo in TrainingCategorylist ">
+					<td></td>
+					<td ng-bind="trainingcategoryinfo.categoryName"></td>
+					<td ng-bind="trainingcategoryinfo.categoryType"></td>
+					<td ng-bind="trainingcategoryinfo.remindPeriod"></td>
+					<td ng-bind="trainingcategoryinfo.dueDays"></td>
+					<td ng-bind="trainingcategoryinfo.remindTemplateName" ></td>
+					<td ng-bind="trainingcategoryinfo.warningTemplateName"></td>
+					<td ng-bind="trainingcategoryinfo.endDays"></td>
+					<td><a ng-click="showCategory(trainingcategoryinfo)"
+						data-toggle="modal" data-target="#updateCategoryModal"
+						data-backdrop="static" style="cursor: pointer;">Update</a></td>
+					<td><a ng-click="showCategory(trainingcategoryinfo)"
+						data-toggle="modal" data-target="#deleteCategoryModal"
+						data-backdrop="static" style="cursor: pointer;">delete</a></td>
+				</tr>
+			</tbody>
+		</table>
+		<div class="pagination-content">
+			<uib-pagination total-items="bigTotalItems"
+				ng-model="page.bigCurrentPage" max-size="page.maxSize"
+				class="pagination-sm" boundary-link-numbers="true"
+				previous-text="&lsaquo;" next-text="&rsaquo;"
+				ng-change="pageChanged()" items-per-page="20"></uib-pagination>
+		</div>
+	</div>
+	<!-- add modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog" style="padding-top: 200px; width: 1100px;">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="addLabel" ng-show="operation ==='save'">
+						Add</h4>
+				</div>
+				<div class="modal-body" style="min-height: 200px;">
+					<form name="TrainingCategoryForm">
+						<div class="col-md-12" ng-show="!remindMessage">
+							<div class="row">
+								<div class="form-group col-sm-6">
+									<label class="col-sm-4 col-xs-6 control-label">Category
+										Name:</label> <input class="form-control" type="text" required
+										name="module" ng-model="trainingcategory_Info.categoryName" />
+								</div>
+								<div class="form-group col-sm-6">
+									<label class="col-sm-4 col-xs-6 control-label">Category
+										Type:</label>
+									<div class="col-sm-5 col-xs-6">
+										<input class="form-control" type="text" required
+											name="tempSubject"
+											ng-model="trainingcategory_Info.categoryType" />
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="form-group col-sm-6">
+									<label class="col-sm-4 col-xs-6 control-label">Remind
+										Period:</label> <input class="form-control" type="text" required
+										name="tempStatus" placeholder="Please splite by ,"
+										ng-model="trainingcategory_Info.remindPeriod" />
+								</div>
+								<div class="form-group col-sm-6">
+									<label class="col-sm-4 col-xs-6 control-label">Due
+										Days:</label>
+									<div class="col-sm-5 col-xs-6">
+										<input class="form-control" type="text" required name="cc"
+											ng-model="trainingcategory_Info.dueDays" />
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="form-group col-sm-6">
+									<label class="col-sm-4 col-xs-6 control-label">Remind
+										Template:</label> <select
+										ng-model="trainingcategory_Info.remindTemplateId"
+										class="form-control">
+										<option value="">Plesase select</option>
+										<option ng-repeat="emailTemplate in emailTemplatelist"
+											value="{{emailTemplate.templateID}}">{{emailTemplate.module}}
+										</option>
+									</select>
+								</div>
+								<div class="form-group col-sm-6">
+									<label class="col-sm-4 col-xs-6 control-label">DueDays
+										Template:</label>
+									<div class="col-sm-5 col-xs-6">
+										<select ng-model="trainingcategory_Info.dueDaysTemplateId"
+											class="form-control">
+											<option value="">Plesase select</option>
+											<option ng-repeat="emailTemplate in emailTemplatelist"
+												value="{{emailTemplate.templateID}}">{{emailTemplate.module}}
+											</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="form-group col-sm-6">
+									<label class="col-sm-4 col-xs-6 control-label">End
+										Days:</label> <input class="form-control" type="text" required
+										name="tempContent" ng-model="trainingcategory_Info.endDays" />
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-warning"
+							ng-show="operation =='save'" title="Fill in all the fields"
+							ng-disabled="!TrainingCategoryForm.$valid"
+							ng-click="submittrainingcategory()">Save</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- add modal -->
+	<!-- delete modal -->
+	<div class="modal fade" id="deleteCategoryModal" tabindex="-1"
+		role="dialog" aria-labelledby="deleteModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="deleteModalLabel">Delete confirm</h4>
+				</div>
+				<table>
+					<tr>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td style="width: 400px;"><h4>&nbsp;&nbsp;&nbsp;&nbsp;Are
+								you sure to delete the Category?</h4></td>
+						<td><button type="button" class="btn btn-warning"
+								ng-click="deleteCategoryData(Categoryselected.categoryID)"
+								data-dismiss="modal">Yes</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+						<td><button type="button" class="btn btn-warning"
+								data-dismiss="modal">No</button></td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+	<!-- delete modal -->
+	<!-- update modal -->
+	<div class="modal fade" id="updateCategoryModal" tabindex="-1"
+		role="dialog" aria-labelledby="exampleModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="exampleModalLabel">Update Training
+						Category</h4>
+				</div>
+				<div>
+					<div class="section position-information">
+						<div class="position-content" style="padding: 20px;">
+							<div class="row">
+								<div class="form-group col-sm-6">
+									<label class="col-sm-4 col-xs-6 control-label">Category
+										ID:</label>
+									<div class="col-sm-5 col-xs-6">{{Categoryselected.categoryID}}</div>
+								</div>
+								<div class="form-group col-sm-6">
+									<label class="col-sm-4 col-xs-6 control-label">Category
+										Name:</label> <input type="text" class="form-control"
+										ng-model="Categoryselected.categoryName">
+								</div>
+							</div>
+							<div class="row">
+								<div class="form-group col-sm-6">
+									<label class="col-sm-4 col-xs-6 control-label">Category
+										Type:</label> <input type="text" class="form-control"
+										ng-model="Categoryselected.categoryType">
+								</div>
+								<div class="form-group col-sm-6">
+									<label class="col-sm-4 col-xs-6 control-label">Remind
+										Period:</label> <input type="text" class="form-control"
+										ng-model="Categoryselected.remindPeriod">
+								</div>
+							</div>
+							<div class="row">
+								<div class="form-group col-sm-6">
+									<label class="col-sm-4 col-xs-6 control-label">Due
+										Days:</label> <input type="text" class="form-control"
+										ng-model="Categoryselected.dueDays">
+								</div>
+								<div class="form-group col-sm-6">
+									<label class="col-sm-4 col-xs-6 control-label">End
+										Days:</label> <input type="text" class="form-control"
+										ng-model="Categoryselected.endDays">
+								</div>
+							</div>
+							<div class="row">
+								<div class="form-group col-sm-6">
+									<label class="col-sm-4 col-xs-6 control-label">Remind
+										Email:</label> <select ng-model="Categoryselected.remindTemplateId"
+										class="form-control">
+										<option ng-repeat="emailTemplate in emailTemplatelist"
+											value="{{emailTemplate.templateID}}">{{emailTemplate.module}}
+										</option>
+									</select>
+								</div>
+								<div class="form-group col-sm-6">
+									<label class="col-sm-4 col-xs-6 control-label">DueDays
+										Email:</label> <select ng-model="Categoryselected.dueDaysTemplateId"
+										class="form-control">
+										<option ng-repeat="emailTemplate in emailTemplatelist"
+											value="{{emailTemplate.templateID}}">{{emailTemplate.module}}
+										</option>
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-warning"
+						ng-click="updateCategoryData(Categoryselected)"
+						data-dismiss="modal">Update</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- update modal -->
+</div>
+</div>

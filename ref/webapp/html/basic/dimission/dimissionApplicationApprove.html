@@ -1,0 +1,122 @@
+<div ng-controller="dimissionApplicationApproveController">
+<div class="contact-title">
+    <h2>Termination Request Approve</h2>
+</div>
+
+<div class="div-padding-top">
+	<table>
+		<tr>
+			<td><label>Search by Date:&nbsp;</label></td>
+			<td><input ng-click="openStartDate()" readonly class="form-control" uib-datepicker-popup ng-model="select.startDate" is-open="startDate.opened" datepicker-options="dateOptions" required close-text="Close" alt-input-formats="altInputFormats" placeholder="yyyy-mm-dd"/></td>
+			<td>&nbsp;-&nbsp;</td>
+			<td><input ng-click="openEndDate()" readonly class="form-control" uib-datepicker-popup ng-model="select.endDate" is-open="endDate.opened" datepicker-options="dateOptions" required close-text="Close" alt-input-formats="altInputFormats" placeholder="yyyy-mm-dd"/></td>
+		</tr>
+		<tr>
+		<td>&nbsp;<td>
+		</tr>
+		<tr>
+			<td><label>Search by EmployeeID:&nbsp;</label></td>
+			<td><input class="form-control" ng-model="emplNumber"/></td>
+		</tr>
+	</table>
+</div>
+<div class="search-result" context-menu="menuOptions">
+	<div class="form-button" ng-show="name == gmGuid || name == hrmGuid">
+	    <button type="button" class="btn " ng-click="mutipleApprove()" ng-disabled="checked.length == 0">Approve</button>
+	    <button type="button" class="btn " ng-click="tableReject(checked[0])"
+	    	 ng-disabled="checked.length!=1" data-toggle="modal" data-target="#rejectModal" data-backdrop="static" >Reject</button>
+	</div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th ng-show="name == gmGuid || name == hrmGuid"></th>
+                <th>Employee ID</th>
+                <th>Guid</th>
+                <th>Staff Name</th>
+                <th>Domain</th>
+                <th>Last Working Date</th>
+                <th>Apply Date</th>
+                <th>Termination Reason</th>
+                <th>Description</th>
+                <th>Rehire Qualified</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="application in applicationList | filter:searchByDate | filter:searchByEmpolyeeID"  >
+				<td class="check-box" ng-show="name == gmGuid || name == hrmGuid">
+	            	<input type="checkbox" class="checkbox" id="checkbox-{{application.dimissionAppId}}" ng-model="application.check" ng-checked="application.check" ng-click="checkBox(application)">
+	            	<label for="checkbox-{{application.dimissionAppId}}"></label>
+	            </td>
+				<td ng-bind="application.emplNo"></td>
+                <td ng-bind="application.adName"></td>
+                <td ng-bind="application.chineseName"></td>
+                <td>{{application.supportingTeamName}}</td>
+                <td>
+                    <input type="date" ng-model="application.editDate" ng-show="application.isEdit"/>
+                    <p class="col-xs-10" ng-bind="application.lastWorkingDay" ng-show="!application.isEdit"></p>
+                    <a href="javascript:;" title="edit" class="fa fa-pencil-square-o fa-lg" ng-click="edit(application)" ng-if="isOM"></a>
+                </td>
+                <td ng-bind="application.appTime"></td>
+                <td ng-bind="application.dimissionType"></td>
+                <td ng-bind="application.description" style="width:200px"></td>
+                <td ng-show = "application.appStatusCode != 1">{{application.rehirable ? 'Yes' : 'No'}}</td>
+                <td ng-hide = "application.appStatusCode != 1"></td>
+                <td>
+                    <a ng-click="tableApprove(application)" data-toggle="modal" data-target="#approveModal" data-backdrop="static" style="cursor:pointer;"  ng-hide="name == gmGuid || name == hrmGuid">approve</a>
+                    <a ng-click="simpleApprove(application)" style="cursor:pointer;" ng-show="name == gmGuid || name == hrmGuid">approve</a>
+                </td>
+                <td><a ng-click="tableReject(application)" data-toggle="modal" data-target="#rejectModal" data-backdrop="static" style="cursor:pointer;">reject</a></td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="pagination-content">
+        <uib-pagination total-items="bigTotalItems" ng-model="page.bigCurrentPage" max-size="page.maxSize" class="pagination-sm" boundary-link-numbers="true" previous-text="&lsaquo;" next-text="&rsaquo;" ng-change="pageChanged()" items-per-page="20"></uib-pagination>
+    </div>
+</div>
+<!-- reject modal -->
+<div class="modal fade" id="rejectModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="exampleModalLabel2">Reject application</h4>
+            </div>
+            <div>
+            	<textarea class="survey_textarea" ng-model="rejectModal.rejectComment"/>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-warning" ng-click="rejectApplication()">Reject</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- reject modal -->
+<!-- approve modal -->
+<div class="modal fade" id="approveModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="exampleModalLabel">Approve application</h4>
+            </div>
+            <table>
+            	<tr><td>&nbsp;</td></tr>
+            	<tr>
+            		<td style="width:400px;"><h4>&nbsp;&nbsp;&nbsp;&nbsp;Is he/she qualified to rehire?</h4></td>
+            		<td><button type="button" class="btn btn-warning" ng-click="approveApplication('true')">Yes</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            		<td><button type="button" class="btn btn-warning" ng-click="approveApplication('false')">No</button></td>
+            	</tr>
+            	<tr><td>&nbsp;</td></tr>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- approve modal -->
+</div>
