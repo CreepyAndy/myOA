@@ -30,7 +30,6 @@ public class LoginController {
 	
 	@RequestMapping(value="",method=RequestMethod.POST, produces = "text/html; charset=utf-8")
 	public ModelAndView login(HttpServletRequest request, HttpSession session){
-		System.out.println("begin controller");
 		ModelAndView mv = new ModelAndView();
 		Map<String,Employee> employeeMap = authorityCache.getEmployeeMap();
 		String guid = request.getParameter("username");

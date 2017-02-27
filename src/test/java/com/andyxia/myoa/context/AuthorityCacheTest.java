@@ -1,5 +1,6 @@
 package com.andyxia.myoa.context;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.andyxia.myoa.dao.AuthorityRepository;
 import com.andyxia.myoa.domain.Authority;
+import com.andyxia.myoa.domain.Employee;
+import com.andyxia.myoa.domain.Role;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath:dispatcher-config.xml"})
@@ -34,6 +37,15 @@ public class AuthorityCacheTest {
 		timeAfter = System.currentTimeMillis();
 		duration = timeAfter-timeBefore;
 		System.out.println("NonCached time :"+duration);
-
+	}
+	@Test
+	public void testIsSame(){
+		Map<Integer,Role> roles = authorityCache.getRoleMap();
+		Role roleFromCache = roles.get(3);
+		Map<String,Employee> employees = authorityCache.getEmployeeMap();
+		Employee employee = employees.get("axia021");
+		Role roleFromEmployee = new ArrayList<Role>(employee.getRoles()).get(0);
+		boolean flag = roleFromEmployee.equals(roleFromCache);
+		System.out.println("");
 	}
 }
