@@ -36,7 +36,7 @@ public class Employee implements Serializable {
 	private String email;
 	@Column(name = "phone")
 	private String phone;
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany
 	@JoinTable(
 		name = "jt_employee_role",
 		joinColumns={

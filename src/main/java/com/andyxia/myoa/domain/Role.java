@@ -37,7 +37,7 @@ public class Role implements Serializable {
 	private Role parent;
 	@OneToMany(mappedBy="parent",cascade=CascadeType.ALL,fetch=FetchType.EAGER)
 	private Set<Role> children = new HashSet<Role>();*/	
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany
 	@JoinTable(
 			name = "jt_role_authority",
 			joinColumns={

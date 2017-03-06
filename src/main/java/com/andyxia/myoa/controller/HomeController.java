@@ -16,4 +16,18 @@ public class HomeController {
 		ModelAndView view = new ModelAndView("main","message",message);
 		return view;
 	}
+	@RequestMapping("/admin") 
+	public ModelAndView admin(HttpSession session) {
+		String message = "<br><div style='text-align:center;'>"
+				+ "<h3>********** Hello World, Spring MVC Tutorial</h3>This message is SECURITY !!!!! **********</div><br><br>";
+		ModelAndView view = new ModelAndView("main","message",message);
+		return view;
+	}
+	@RequestMapping("/confidential") 
+	public ModelAndView confidential(HttpSession session) {
+		String message = "<br><div style='text-align:center;'>"
+				+ "<h3>********** Hello World, Spring MVC Tutorial</h3>This message is confidential !!!!! **********</div><br><br>";
+		ModelAndView view = new ModelAndView("main","message",message);
+		return view;
+	}
 }

@@ -12,6 +12,7 @@
 		<java.version>1.8</java.version>
 		<log4j2.version>2.5</log4j2.version>
 		<poi.version>3.14</poi.version>
+		<springSecuroty.version>4.1.0.RELEASE</springSecuroty.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	</properties>
@@ -64,6 +65,25 @@
 			<artifactId>spring-test</artifactId>
 			<version>${spring.version}</version>
 			<scope>test</scope>
+		</dependency>
+		
+		<!-- spring security -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>${springSecuroty.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>${springSecuroty.version}</version>
+		</dependency>
+		
+		<dependency>
+    		<groupId>org.springframework.security</groupId>
+   			<artifactId>spring-security-taglibs</artifactId>
+    		<version>${springSecuroty.version}</version>
 		</dependency>
 
 		<!-- <dependency> <groupId>org.springframework</groupId> <artifactId>spring-context-support</artifactId> 
