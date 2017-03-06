@@ -65,4 +65,9 @@ public class EmployeeServiceImpl implements EmployeeService{
 		return edao.findOneByGuid(guid);
 	}
 
+	@Override
+	public String getPassword(String guid) {
+		return edao.findOneByGuid(guid).getPsw();
+	}
+
 }

@@ -14,4 +14,5 @@ public interface EmployeeService {
 	public Set<Authority> getAuthority(String guid);
 	public boolean verifyUser(String guid,String psw);
 	public Employee getEmployee(String guid);
+	public String getPassword(String guid);
 }

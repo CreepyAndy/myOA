@@ -1,64 +1,30 @@
 package com.andyxia.myoa.security;
 
-import java.util.Collection;
+import java.util.Set;
 
-import org.springframework.security.core.GrantedAuthority;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-@Service
+import com.andyxia.myoa.domain.Authority;
+import com.andyxia.myoa.service.EmployeeService;
+
+
 public class OAUserDetailService implements UserDetailsService {
+	@Autowired
+	private EmployeeService es;
 
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		UserDetails userDetails = new UserDetails() {
-			
-			@Override
-			public boolean isEnabled() {
-				// TODO Auto-generated method stub
-				return false;
-			}
-			
-			@Override
-			public boolean isCredentialsNonExpired() {
-				// TODO Auto-generated method stub
-				return false;
-			}
-			
-			@Override
-			public boolean isAccountNonLocked() {
-				// TODO Auto-generated method stub
-				return false;
-			}
-			
-			@Override
-			public boolean isAccountNonExpired() {
-				// TODO Auto-generated method stub
-				return false;
-			}
-			
-			@Override
-			public String getUsername() {
-				// TODO Auto-generated method stub
-				return null;
-			}
-			
-			@Override
-			public String getPassword() {
-				// TODO Auto-generated method stub
-				return null;
-			}
-			
-			@Override
-			public Collection<? extends GrantedAuthority> getAuthorities() {
-				// TODO Auto-generated method stub
-				return null;
-			}
-		};
-		return null;
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {		
+		//TODO psw = null
+		String password = es.getPassword(username);
+		System.out.println(password);
+		Set<Authority> authorities = es.getAuthority(username);
+		UserDetails userDetails = new User(username, password, authorities);
+		return userDetails;
 	}
 
 }

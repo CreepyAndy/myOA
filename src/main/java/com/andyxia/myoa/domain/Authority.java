@@ -17,9 +17,11 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.springframework.security.core.GrantedAuthority;
 @Entity
 @Table(name = "t_authority")
-public class Authority implements Serializable {
+public class Authority implements GrantedAuthority {
 	/**
 	 * 
 	 */
@@ -81,5 +83,9 @@ public class Authority implements Serializable {
 	}
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
+	}
+	@Override
+	public String getAuthority() {
+		return this.getAuthority();
 	}
 }
