@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import com.andyxia.myoa.domain.Authority;
 import com.andyxia.myoa.service.EmployeeService;
 
-
+@Service("oAUserDetailService")
 public class OAUserDetailService implements UserDetailsService {
 	@Autowired
 	private EmployeeService es;
@@ -26,6 +26,8 @@ public class OAUserDetailService implements UserDetailsService {
 		UserDetails userDetails = new User(username, password, authorities);
 		return userDetails;
 	}
+
+
 
 }
 
