@@ -1,5 +1,5 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:context="http://www.springframework.org/schema/context"  xmlns:security="http://www.springframework.org/schema/security"
 	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
 	xsi:schemaLocation="
@@ -10,7 +10,8 @@
         http://www.springframework.org/schema/context 
         http://www.springframework.org/schema/context/spring-context.xsd
         http://www.springframework.org/schema/data/jpa
-     	http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
+     	http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+     	http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
 
 	<context:component-scan base-package="com.andyxia.myoa" />
 	<mvc:annotation-driven />
@@ -62,6 +63,29 @@
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
 	</bean>
+	
+	<security:http auto-config="true">
+		<security:csrf disabled="true" />
+<!-- 		<security:intercept-url pattern="/admin"
+			access="ROLE_ADMIN" />
+		<security:intercept-url pattern="/confidential"
+			access="ROLE_SUPERADMIN" /> -->
+		<security:form-login login-page='/login.html'
+			default-target-url='/WEB-INF/index.jsp' />
+	</security:http>
+
+
+	<security:authentication-manager>
+		<security:authentication-provider
+			user-service-ref="oAUserDetailService">
+		</security:authentication-provider>
+		<!-- <security:authentication-provider>
+            <security:user-service>
+                <security:user name="favccxx" password="favccxx" authorities="ROLE_USER,ROLE_ADMIN"/>
+                <security:user name="super" password="super" authorities="ROLE_SUPERADMIN"/>
+            </security:user-service>
+        </security:authentication-provider>  -->
+	</security:authentication-manager>
 
 </beans>
 	
